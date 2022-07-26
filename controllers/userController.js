@@ -1,4 +1,3 @@
-// const { connection } = require("../app");
 const connection = require("../config/database");
 const {
   CREATE_USER,
@@ -62,4 +61,15 @@ exports.login = async (req, res, next) => {
     console.log(err);
     return next(new Error(err.message));
   }
+};
+
+exports.logout = async (req, res, next) => {
+  res.cookie("token", null, {
+    expires: new Date(Date.now()),
+    httpOnly: true,
+  });
+  res.status(200).json({
+    success: true,
+    message: "logout success",
+  });
 };
