@@ -47,11 +47,6 @@ exports.signup = async (req, res, next) => {
       }
     );
 
-    // connection.query(SELECT_USER_BY_EMAIL, [email], (err, results) => {
-    //   delete results[0].password;
-    //   console.log("I RAN!!");
-    //   cookieToken(results[0], res);
-    // });
   } catch (err) {
     res.status(500).json({
       success: false,
