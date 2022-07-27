@@ -3,9 +3,9 @@ exports.dropUsersTableSQL = "DROP TABLE IF EXISTS users;";
 
 exports.createUsersTableSQL = `CREATE TABLE users (
     id BINARY(16) PRIMARY KEY,
-    full_name TEXT,
-    email TEXT,
-    password TEXT,
+    full_name TEXT NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    password TEXT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
   );`;

@@ -1,17 +1,18 @@
 require("dotenv").config();
 const express = require("express");
-const mysql = require("mysql2");
+const cookieParser = require("cookie-parser");
 
 const app = express();
 
-const { DATABASE_URL } = process.env;
+app.use(express.json());
+app.use(cookieParser());
 
-const connection = mysql.createConnection(DATABASE_URL);
+const user = require("./routes/user");
 
-connection.connect();
+app.use("/api/v1/", user);
 
 app.get("/", (req, res) => {
   res.status(200).json({ message: "hello world!" });
 });
 
-module.exports = app;
+exports.app = app;
