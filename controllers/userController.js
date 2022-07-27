@@ -14,7 +14,6 @@ exports.signup = async (req, res, next) => {
       success: false,
       message: "Please send name, email & password",
     });
-    // return next();
   }
 
   if (password.length < 6) {
@@ -22,7 +21,6 @@ exports.signup = async (req, res, next) => {
       success: false,
       message: "Password should be at least 6 characters long",
     });
-    // return next();
   }
 
   try {
@@ -38,7 +36,6 @@ exports.signup = async (req, res, next) => {
             success: false,
             message: "User already exists",
           });
-          // return next();
         }
         connection.query(SELECT_USER_BY_EMAIL, [email], (err, results) => {
           delete results[0].password;
@@ -52,7 +49,6 @@ exports.signup = async (req, res, next) => {
       success: false,
       message: "Internal server error. Please try again!",
     });
-    // return next();
   }
 };
 
@@ -64,7 +60,6 @@ exports.login = async (req, res, next) => {
       success: false,
       message: "Please provide email and password",
     });
-    // return next();
   }
 
   try {
@@ -74,7 +69,6 @@ exports.login = async (req, res, next) => {
           success: false,
           message: "Email or password doesn't match or exist",
         });
-        // return next();
       }
 
       const isPasswordCorrect = await bcrypt.compare(
@@ -87,7 +81,6 @@ exports.login = async (req, res, next) => {
           success: false,
           message: "Email or password doesn't match or exist",
         });
-        // return next();
       }
       delete results[0].password;
       cookieToken(results[0], res);
@@ -97,7 +90,6 @@ exports.login = async (req, res, next) => {
       success: false,
       message: "Internal server error. Please try again!",
     });
-    // return next();
   }
 };
 
