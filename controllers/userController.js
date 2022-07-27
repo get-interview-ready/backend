@@ -10,7 +10,12 @@ exports.signup = async (req, res, next) => {
   const { full_name, email, password } = req.body;
 
   if (!full_name || !email || !password) {
-    return next(new Error("Please send name, email & password"));
+    res.status(400).json({
+      success: false,
+      message: "Please send name, email & password",
+    });
+    // return next(new Error("Please send name, email & password"));
+    return next();
   }
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
@@ -28,8 +33,13 @@ exports.signup = async (req, res, next) => {
       cookieToken(results[0], res);
     });
   } catch (err) {
-    console.log(err);
-    return next(new Error(err.message));
+    res.status(500).json({
+      success: false,
+      message: "Internal server error. PLease try again!",
+    });
+    return next();
+    // console.log(err);
+    // return next(new Error(err.message));
   }
 };
 
@@ -37,13 +47,23 @@ exports.login = async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    return next(new Error("Please provide email and password"));
+    res.status(400).json({
+      success: false,
+      message: "Please provide email and password",
+    });
+    return next();
+    // return next(new Error("Please provide email and password"));
   }
 
   try {
     connection.query(SELECT_USER_BY_EMAIL, [email], async (err, results) => {
       if (!results[0]) {
-        return next(new Error("Email/password doesn't match or exist"));
+        res.status(400).json({
+          success: false,
+          message: "Email or password doesn't match or exist",
+        });
+        return next();
+        // return next(new Error("Email/password doesn't match or exist"));
       }
 
       const isPasswordCorrect = await bcrypt.compare(
@@ -52,14 +72,24 @@ exports.login = async (req, res, next) => {
       );
 
       if (!isPasswordCorrect) {
-        return next(new Error("Email/password doesn't match or exist"));
+        res.status(400).json({
+          success: false,
+          message: "Email or password doesn't match or exist",
+        });
+        return next();
+        // return next(new Error("Email/password doesn't match or exist"));
       }
       delete results[0].password;
       cookieToken(results[0], res);
     });
   } catch (err) {
-    console.log(err);
-    return next(new Error(err.message));
+    res.status(500).json({
+      success: false,
+      message: "Internal server error. PLease try again!",
+    });
+    return next();
+    // console.log(err);
+    // return next(new Error(err.message));
   }
 };
 
