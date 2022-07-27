@@ -10,19 +10,19 @@ exports.signup = async (req, res, next) => {
   const { full_name, email, password } = req.body;
 
   if (!full_name || !email || !password) {
-    res.status(400).json({
+    return res.status(400).json({
       success: false,
       message: "Please send name, email & password",
     });
-    return next();
+    // return next();
   }
 
   if (password.length < 6) {
-    res.status(400).json({
+    return res.status(400).json({
       success: false,
       message: "Password should be at least 6 characters long",
     });
-    return next();
+    // return next();
   }
 
   try {
@@ -34,11 +34,11 @@ exports.signup = async (req, res, next) => {
       (err, results) => {
         if (err) {
           isDuplicateUser = true;
-          res.status(400).json({
+          return res.status(400).json({
             success: false,
             message: "User already exists",
           });
-          return next();
+          // return next();
         }
         connection.query(SELECT_USER_BY_EMAIL, [email], (err, results) => {
           delete results[0].password;
@@ -48,11 +48,11 @@ exports.signup = async (req, res, next) => {
     );
 
   } catch (err) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Internal server error. Please try again!",
     });
-    return next();
+    // return next();
   }
 };
 
@@ -60,21 +60,21 @@ exports.login = async (req, res, next) => {
   const { email, password } = req.body;
 
   if (!email || !password) {
-    res.status(400).json({
+    return res.status(400).json({
       success: false,
       message: "Please provide email and password",
     });
-    return next();
+    // return next();
   }
 
   try {
     connection.query(SELECT_USER_BY_EMAIL, [email], async (err, results) => {
       if (!results[0]) {
-        res.status(400).json({
+        return res.status(400).json({
           success: false,
           message: "Email or password doesn't match or exist",
         });
-        return next();
+        // return next();
       }
 
       const isPasswordCorrect = await bcrypt.compare(
@@ -83,21 +83,21 @@ exports.login = async (req, res, next) => {
       );
 
       if (!isPasswordCorrect) {
-        res.status(400).json({
+        return res.status(400).json({
           success: false,
           message: "Email or password doesn't match or exist",
         });
-        return next();
+        // return next();
       }
       delete results[0].password;
       cookieToken(results[0], res);
     });
   } catch (err) {
-    res.status(500).json({
+    return res.status(500).json({
       success: false,
       message: "Internal server error. Please try again!",
     });
-    return next();
+    // return next();
   }
 };
 
