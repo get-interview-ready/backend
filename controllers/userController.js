@@ -14,9 +14,17 @@ exports.signup = async (req, res, next) => {
       success: false,
       message: "Please send name, email & password",
     });
-    // return next(new Error("Please send name, email & password"));
     return next();
   }
+
+  if (password.length < 6) {
+    res.status(400).json({
+      success: false,
+      message: "Password should be at least 6 characters long",
+    });
+    return next();
+  }
+
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
 
@@ -24,22 +32,32 @@ exports.signup = async (req, res, next) => {
       CREATE_USER,
       [full_name, email, hashedPassword],
       (err, results) => {
-        console.log(results);
+        if (err) {
+          isDuplicateUser = true;
+          res.status(400).json({
+            success: false,
+            message: "User already exists",
+          });
+          return next();
+        }
+        connection.query(SELECT_USER_BY_EMAIL, [email], (err, results) => {
+          delete results[0].password;
+          cookieToken(results[0], res);
+        });
       }
     );
 
-    connection.query(SELECT_USER_BY_EMAIL, [email], (err, results) => {
-      delete results[0].password;
-      cookieToken(results[0], res);
-    });
+    // connection.query(SELECT_USER_BY_EMAIL, [email], (err, results) => {
+    //   delete results[0].password;
+    //   console.log("I RAN!!");
+    //   cookieToken(results[0], res);
+    // });
   } catch (err) {
     res.status(500).json({
       success: false,
-      message: "Internal server error. PLease try again!",
+      message: "Internal server error. Please try again!",
     });
     return next();
-    // console.log(err);
-    // return next(new Error(err.message));
   }
 };
 
@@ -52,7 +70,6 @@ exports.login = async (req, res, next) => {
       message: "Please provide email and password",
     });
     return next();
-    // return next(new Error("Please provide email and password"));
   }
 
   try {
@@ -63,7 +80,6 @@ exports.login = async (req, res, next) => {
           message: "Email or password doesn't match or exist",
         });
         return next();
-        // return next(new Error("Email/password doesn't match or exist"));
       }
 
       const isPasswordCorrect = await bcrypt.compare(
@@ -77,7 +93,6 @@ exports.login = async (req, res, next) => {
           message: "Email or password doesn't match or exist",
         });
         return next();
-        // return next(new Error("Email/password doesn't match or exist"));
       }
       delete results[0].password;
       cookieToken(results[0], res);
@@ -85,11 +100,9 @@ exports.login = async (req, res, next) => {
   } catch (err) {
     res.status(500).json({
       success: false,
-      message: "Internal server error. PLease try again!",
+      message: "Internal server error. Please try again!",
     });
     return next();
-    // console.log(err);
-    // return next(new Error(err.message));
   }
 };
 
