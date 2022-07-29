@@ -9,6 +9,7 @@ const {
   INSERT_REFERRER,
   DELETE_REFERRER,
   SELECT_ALL_REFERRERS_BY_UID_AND_CID,
+  UPDATE_REFERRER,
 } = require("../services/dreamCompanyServices");
 const internalServerError = require("../utils/internalServerError");
 const { v4: uuidv4 } = require("uuid");
@@ -261,6 +262,30 @@ exports.getAllReferrers = (req, res) => {
         });
       }
     );
+  } catch (err) {
+    return internalServerError(res);
+  }
+};
+
+exports.updateReferrer = (req, res) => {
+  const { id, isContacted } = req.body;
+  if (!id || !isContacted) {
+    return res.status(400).json({
+      success: false,
+      message:
+        "Send referrer ID and isContacted to successfully update contacted status.",
+    });
+  }
+  try {
+    connection.query(UPDATE_REFERRER, [isContacted, id], (err, results) => {
+      if (err) {
+        return internalServerError(res);
+      }
+      return res.status(200).json({
+        success: true,
+        message: "Referrer status: contacted successfully updated.",
+      });
+    });
   } catch (err) {
     return internalServerError(res);
   }

@@ -44,3 +44,6 @@ exports.SELECT_ALL_REFERRERS_BY_UID_AND_CID = `SELECT BIN_TO_UUID(id) AS id,
 	created_at, updated_at FROM dream_company_referrals
     WHERE user_id = UUID_TO_BIN(?) AND 
     company_id = UUID_TO_BIN(?);`;
+
+exports.UPDATE_REFERRER = `UPDATE dream_company_referrals 
+    SET contacted = ? WHERE id = UUID_TO_BIN(?);`;
