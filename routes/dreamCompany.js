@@ -9,6 +9,7 @@ const {
   updateMdText,
   updateReferralMsg,
   createReferrer,
+  deleteReferrer,
 } = require("../controllers/dreamCompanyController");
 
 router.route("/createDreamCompany/").post(auth, createDreamCompany);
@@ -18,5 +19,6 @@ router.route("/getDreamCompany/:id").get(auth, getDreamCompany);
 router.route("/updateMdText").patch(auth, updateMdText);
 router.route("/updateReferralMsg").patch(auth, updateReferralMsg);
 router.route("/createReferrer").post(auth, createReferrer);
+router.route("/deleteReferrer").delete(auth, deleteReferrer);
 
 module.exports = router;

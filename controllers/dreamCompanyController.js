@@ -7,6 +7,7 @@ const {
   UPDATE_MD_TEXT_BY_ID,
   UPDATE_REFERRAL_MSG_BY_ID,
   INSERT_REFERRER,
+  DELETE_REFERRER,
 } = require("../services/dreamCompanyServices");
 const internalServerError = require("../utils/internalServerError");
 const { v4: uuidv4 } = require("uuid");
@@ -34,10 +35,7 @@ exports.createDreamCompany = (req, res) => {
               message: `${name} already exists.`,
             });
           }
-          return res.status(400).json({
-            success: false,
-            message: `An internal server error occured`,
-          });
+          return internalServerError(res);
         }
         return res.status(200).json({
           success: true,
@@ -62,10 +60,7 @@ exports.deleteDreamCompany = (req, res) => {
   try {
     connection.query(DELETE_DREAM_COMPANY_BY_ID, [id], (err, results) => {
       if (err) {
-        return res.status(400).json({
-          success: false,
-          message: `An internal server error occured`,
-        });
+        return internalServerError(res);
       }
       if (results.affectedRows === 0) {
         return res.status(400).json({
@@ -97,10 +92,7 @@ exports.getAllDreamCompanies = (req, res) => {
       [id],
       (err, results) => {
         if (err) {
-          return res.status(400).json({
-            success: false,
-            message: `An internal server error occured`,
-          });
+          return internalServerError(res);
         }
         return res.status(200).json({
           success: true,
@@ -125,10 +117,7 @@ exports.getDreamCompany = (req, res) => {
   try {
     connection.query(SELECT_DREAM_COMPANY_BY_ID, [id], (err, results) => {
       if (err) {
-        return res.status(400).json({
-          success: false,
-          message: `An internal server error occured`,
-        });
+        return internalServerError(res);
       }
       return res.status(200).json({
         success: true,
@@ -152,10 +141,7 @@ exports.updateMdText = (req, res) => {
   try {
     connection.query(UPDATE_MD_TEXT_BY_ID, [text, id], (err, results) => {
       if (err) {
-        return res.status(400).json({
-          success: false,
-          message: `An internal server error occured`,
-        });
+        return internalServerError(res);
       }
       return res.status(200).json({
         success: true,
@@ -178,10 +164,7 @@ exports.updateReferralMsg = (req, res) => {
   try {
     connection.query(UPDATE_REFERRAL_MSG_BY_ID, [msg, id], (err, results) => {
       if (err) {
-        return res.status(400).json({
-          success: false,
-          message: `An internal server error occured`,
-        });
+        return internalServerError(res);
       }
       return res.status(200).json({
         success: true,
@@ -211,10 +194,7 @@ exports.createReferrer = (req, res) => {
       [id, name, link, user_id, company_id],
       (err, results) => {
         if (err) {
-          return res.status(400).json({
-            success: false,
-            message: `An internal server error occured`,
-          });
+          return internalServerError(res);
         }
         return res.status(200).json({
           success: true,
@@ -223,6 +203,35 @@ exports.createReferrer = (req, res) => {
         });
       }
     );
+  } catch (err) {
+    return internalServerError(res);
+  }
+};
+
+exports.deleteReferrer = (req, res) => {
+  const { id } = req.body;
+  if (!id) {
+    return res.status(400).json({
+      success: false,
+      message: "Please send referrer ID to delete.",
+    });
+  }
+  try {
+    connection.query(DELETE_REFERRER, [id], (err, results) => {
+      if (err) {
+        return internalServerError(res);
+      }
+      if (results.affectedRows === 0) {
+        return res.status(400).json({
+          success: false,
+          message: `Requested referrer does not exist.`,
+        });
+      }
+      return res.status(200).json({
+        success: true,
+        message: "Referrer successfully deleted",
+      });
+    });
   } catch (err) {
     return internalServerError(res);
   }
