@@ -11,7 +11,7 @@ const user = require("./routes/user");
 const dreamCompany = require("./routes/dreamCompany");
 
 app.use("/api/v1/", user);
-app.use("/api/v1/", dreamCompany);
+app.use("/api/v1/dreamCompanies", dreamCompany);
 
 app.get("/", (req, res) => {
   res.status(200).json({ message: "hello world!" });

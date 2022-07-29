@@ -185,3 +185,43 @@ exports.updateReferralMsg = (req, res) => {
     return internalServerError(res);
   }
 };
+
+exports.createReferrer = (req, res) => {
+  const { user_id, name } = req.body;
+
+  if (!user_id || !name) {
+    return res.status(400).json({
+      success: false,
+      message: "Please send dream company name & user id",
+    });
+  }
+  try {
+    connection.query(CREATE_DREAM_COMPANY, [name, user_id], (err, results) => {
+      if (err) {
+        if (err.code === "ER_DUP_ENTRY") {
+          return res.status(400).json({
+            success: false,
+            message: `${name} already exists.`,
+          });
+        }
+        return res.status(400).json({
+          success: false,
+          message: `An internal server error occured`,
+        });
+      }
+      connection.query(
+        SELECT_DREAM_COMPANY_BY_NAME_AND_UID,
+        [user_id, name],
+        (err, results) => {
+          return res.status(200).json({
+            success: true,
+            message: "Dream company successfully added",
+            dreamCompany: results[0],
+          });
+        }
+      );
+    });
+  } catch (err) {
+    return internalServerError(res);
+  }
+};
