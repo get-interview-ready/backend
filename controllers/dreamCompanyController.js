@@ -1,7 +1,6 @@
 const connection = require("../config/database");
 const {
   INSERT_DREAM_COMPANY,
-  SELECT_DREAM_COMPANY_BY_NAME_AND_UID,
   DELETE_DREAM_COMPANY_BY_ID,
   SELECT_ALL_DREAM_COMPANIES_BY_UID,
   SELECT_DREAM_COMPANY_BY_ID,
@@ -200,37 +199,28 @@ exports.createReferrer = (req, res) => {
   if (!name || !link || !user_id || !company_id) {
     return res.status(400).json({
       success: false,
-      message: "Please send dream company name & user id",
+      message:
+        "Please send referrer name, referrer link, user ID and dream company ID.",
     });
   }
   try {
+    const id = uuidv4();
+    const referrer = { id, name, link, user_id, company_id };
     connection.query(
       INSERT_REFERRER,
-      [name, link, user_id, company_id],
+      [id, name, link, user_id, company_id],
       (err, results) => {
         if (err) {
-          if (err.code === "ER_DUP_ENTRY") {
-            return res.status(400).json({
-              success: false,
-              message: `${name} already exists.`,
-            });
-          }
           return res.status(400).json({
             success: false,
             message: `An internal server error occured`,
           });
         }
-        connection.query(
-          SELECT_DREAM_COMPANY_BY_NAME_AND_UID,
-          [user_id, name],
-          (err, results) => {
-            return res.status(200).json({
-              success: true,
-              message: "Dream company successfully added",
-              dreamCompany: results[0],
-            });
-          }
-        );
+        return res.status(200).json({
+          success: true,
+          message: "Referrer successfully added",
+          referrer,
+        });
       }
     );
   } catch (err) {
