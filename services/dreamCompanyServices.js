@@ -30,5 +30,5 @@ exports.UPDATE_REFERRAL_MSG_BY_ID = `UPDATE dream_companies
     SET referral_msg = ? WHERE id = UUID_TO_BIN(?);`;
 
 exports.INSERT_REFERRER = `INSERT INTO dream_company_referrals 
-    (id, name, link, contacted, user_id) VALUES 
-    (UUID_TO_BIN(UUID()), ?, ?, 0, UUID_TO_BIN(?));`;
+    (id, name, link, contacted, user_id, company_id) VALUES 
+    (UUID_TO_BIN(UUID()), ?, ?, 0, UUID_TO_BIN(?), UUID_TO_BIN(?));`;
