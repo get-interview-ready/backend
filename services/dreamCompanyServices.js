@@ -1,4 +1,4 @@
-exports.CREATE_DREAM_COMPANY = `INSERT INTO dream_companies 
+exports.INSERT_DREAM_COMPANY = `INSERT INTO dream_companies 
     (id, name, user_id) VALUES 
     (UUID_TO_BIN(UUID()), ?, UUID_TO_BIN(?));`;
 
@@ -28,3 +28,7 @@ exports.UPDATE_MD_TEXT_BY_ID = `UPDATE dream_companies
 
 exports.UPDATE_REFERRAL_MSG_BY_ID = `UPDATE dream_companies 
     SET referral_msg = ? WHERE id = UUID_TO_BIN(?);`;
+
+exports.INSERT_REFERRER = `INSERT INTO dream_company_referrals 
+    (id, name, link, contacted, user_id) VALUES 
+    (UUID_TO_BIN(UUID()), ?, ?, 0, UUID_TO_BIN(?));`;

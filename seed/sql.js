@@ -91,10 +91,10 @@ exports.createDreamCompaniesTableSQL = `CREATE TABLE dream_companies (
 exports.addUniqueCompanyConstraint = `ALTER TABLE dream_companies ADD CONSTRAINT uq_company UNIQUE(name, user_id);`
 
 // dream_company_refferals table
-exports.dropDreamCompanyRefferalsTableSQL =
-  "DROP TABLE IF EXISTS dream_company_refferals;";
+exports.dropDreamCompanyReferralsTableSQL =
+  "DROP TABLE IF EXISTS dream_company_referrals;";
 
-exports.createDreamCompanyRefferalsTableSQL = `CREATE TABLE dream_company_refferals (
+exports.createDreamCompanyReferralsTableSQL = `CREATE TABLE dream_company_referrals (
     id BINARY(16) PRIMARY KEY,
     name TEXT,
     link TEXT,

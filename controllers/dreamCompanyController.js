@@ -1,6 +1,6 @@
 const connection = require("../config/database");
 const {
-  CREATE_DREAM_COMPANY,
+  INSERT_DREAM_COMPANY,
   SELECT_DREAM_COMPANY_BY_NAME_AND_UID,
   DELETE_DREAM_COMPANY_BY_ID,
   SELECT_ALL_DREAM_COMPANIES_BY_UID,
@@ -20,7 +20,7 @@ exports.createDreamCompany = (req, res) => {
     });
   }
   try {
-    connection.query(CREATE_DREAM_COMPANY, [name, user_id], (err, results) => {
+    connection.query(INSERT_DREAM_COMPANY, [name, user_id], (err, results) => {
       if (err) {
         if (err.code === "ER_DUP_ENTRY") {
           return res.status(400).json({
@@ -64,6 +64,12 @@ exports.deleteDreamCompany = (req, res) => {
         return res.status(400).json({
           success: false,
           message: `An internal server error occured`,
+        });
+      }
+      if (results.affectedRows === 0) {
+        return res.status(400).json({
+          success: false,
+          message: `Requested dream company does not exist.`,
         });
       }
       return res.status(200).json({

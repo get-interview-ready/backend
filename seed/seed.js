@@ -2,7 +2,7 @@ const {
   dropBehavioralQuestionsTableSQL,
   dropDreamCompaniesTableSQL,
   // dropDreamCompanyNotesTableSQL,
-  dropDreamCompanyRefferalsTableSQL,
+  dropDreamCompanyReferralsTableSQL,
   dropFlashCardFoldersTableSQL,
   dropFlashCardsTableSQL,
   dropProjectQuestionsTableSQL,
@@ -13,7 +13,7 @@ const {
   createDreamCompaniesTableSQL,
   addUniqueCompanyConstraint,
   // createDreamCompanyNotesTableSQL,
-  createDreamCompanyRefferalsTableSQL,
+  createDreamCompanyReferralsTableSQL,
   createFlashCardFoldersTableSQL,
   createFlashCardsTableSQL,
   createProjectQuestionsTableSQL,
@@ -41,7 +41,7 @@ const seedSchema = async () => {
     // await connection.query(dropDreamCompanyNotesTableSQL);
     // console.log("***dropped dream_company_notes table***");
 
-    await connection.query(dropDreamCompanyRefferalsTableSQL);
+    await connection.query(dropDreamCompanyReferralsTableSQL);
     console.log("***dropped dream_company_refferals table***");
 
     await connection.query(dropFlashCardFoldersTableSQL);
@@ -74,7 +74,7 @@ const seedSchema = async () => {
     // await connection.query(createDreamCompanyNotesTableSQL);
     // console.log("***created dream_company_notes table***");
 
-    await connection.query(createDreamCompanyRefferalsTableSQL);
+    await connection.query(createDreamCompanyReferralsTableSQL);
     console.log("***created dream_company_refferals table***");
 
     await connection.query(createFlashCardFoldersTableSQL);
