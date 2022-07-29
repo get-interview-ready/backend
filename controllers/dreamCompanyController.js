@@ -8,6 +8,7 @@ const {
   UPDATE_REFERRAL_MSG_BY_ID,
   INSERT_REFERRER,
   DELETE_REFERRER,
+  SELECT_ALL_REFERRERS_BY_UID_AND_CID,
 } = require("../services/dreamCompanyServices");
 const internalServerError = require("../utils/internalServerError");
 const { v4: uuidv4 } = require("uuid");
@@ -232,6 +233,34 @@ exports.deleteReferrer = (req, res) => {
         message: "Referrer successfully deleted",
       });
     });
+  } catch (err) {
+    return internalServerError(res);
+  }
+};
+
+exports.getAllReferrers = (req, res) => {
+  const { user_id, company_id } = req.query;
+  if (!user_id || !company_id) {
+    return res.status(400).json({
+      success: false,
+      message: "Please send user ID and company ID to fetch all referrers.",
+    });
+  }
+  try {
+    connection.query(
+      SELECT_ALL_REFERRERS_BY_UID_AND_CID,
+      [user_id, company_id],
+      (err, results) => {
+        if (err) {
+          return internalServerError(res);
+        }
+        return res.status(200).json({
+          success: true,
+          message: "Referrers fetched successfully.",
+          referrers: results,
+        });
+      }
+    );
   } catch (err) {
     return internalServerError(res);
   }

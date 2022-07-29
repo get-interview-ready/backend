@@ -36,3 +36,11 @@ exports.INSERT_REFERRER = `INSERT INTO dream_company_referrals
 
 exports.DELETE_REFERRER = `DELETE FROM dream_company_referrals 
     WHERE id = UUID_TO_BIN(?);`;
+
+exports.SELECT_ALL_REFERRERS_BY_UID_AND_CID = `SELECT BIN_TO_UUID(id) AS id, 
+    name, link, contacted,
+    BIN_TO_UUID(user_id) AS user_id, 
+	BIN_TO_UUID(company_id) AS company_id, 
+	created_at, updated_at FROM dream_company_referrals
+    WHERE user_id = UUID_TO_BIN(?) AND 
+    company_id = UUID_TO_BIN(?);`;
