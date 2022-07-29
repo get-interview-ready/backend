@@ -10,6 +10,7 @@ const {
   INSERT_REFERRER,
 } = require("../services/dreamCompanyServices");
 const internalServerError = require("../utils/internalServerError");
+const { v4: uuidv4 } = require("uuid");
 
 exports.createDreamCompany = (req, res) => {
   const { user_id, name } = req.body;
@@ -21,31 +22,31 @@ exports.createDreamCompany = (req, res) => {
     });
   }
   try {
-    connection.query(INSERT_DREAM_COMPANY, [name, user_id], (err, results) => {
-      if (err) {
-        if (err.code === "ER_DUP_ENTRY") {
+    const id = uuidv4();
+    const dreamCompany = { id, name, user_id };
+    connection.query(
+      INSERT_DREAM_COMPANY,
+      [id, name, user_id],
+      (err, results) => {
+        if (err) {
+          if (err.code === "ER_DUP_ENTRY") {
+            return res.status(400).json({
+              success: false,
+              message: `${name} already exists.`,
+            });
+          }
           return res.status(400).json({
             success: false,
-            message: `${name} already exists.`,
+            message: `An internal server error occured`,
           });
         }
-        return res.status(400).json({
-          success: false,
-          message: `An internal server error occured`,
+        return res.status(200).json({
+          success: true,
+          message: "Dream company successfully added",
+          dreamCompany,
         });
       }
-      connection.query(
-        SELECT_DREAM_COMPANY_BY_NAME_AND_UID,
-        [user_id, name],
-        (err, results) => {
-          return res.status(200).json({
-            success: true,
-            message: "Dream company successfully added",
-            dreamCompany: results[0],
-          });
-        }
-      );
-    });
+    );
   } catch (err) {
     return internalServerError(res);
   }

@@ -1,6 +1,6 @@
 exports.INSERT_DREAM_COMPANY = `INSERT INTO dream_companies 
     (id, name, user_id) VALUES 
-    (UUID_TO_BIN(UUID()), ?, UUID_TO_BIN(?));`;
+    (UUID_TO_BIN(?), ?, UUID_TO_BIN(?));`;
 
 exports.SELECT_DREAM_COMPANY_BY_NAME_AND_UID = `SELECT BIN_TO_UUID(id) AS id, 
     name, updated_at, md_text, referral_msg,
