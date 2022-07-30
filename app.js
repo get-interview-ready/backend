@@ -13,14 +13,17 @@ const user = require("./routes/user");
 const dreamCompany = require("./routes/dreamCompany");
 const behavioralQuestion = require("./routes/behavioralQuestion");
 const project = require("./routes/project");
+const technicalQuestion = require('./routes/technicalQuestion')
 
 app.use("/api/v1/", user);
 app.use("/api/v1/dreamCompanies", dreamCompany);
 app.use("/api/v1/behavioralQuestions", behavioralQuestion);
 app.use("/api/v1/projects", project);
+app.use("/api/v1/technicalQuestions", technicalQuestion);
 
 app.get("/", (req, res) => {
   res.status(200).json({ message: "hello world!" });
 });
 
 exports.app = app;
+
