@@ -16,6 +16,7 @@ exports.dropBehavioralQuestionsTableSQL =
 
 exports.createBehavioralQuestionsTableSQL = `CREATE TABLE behavioral_questions (
     id BINARY(16) PRIMARY KEY,
+    questionId TEXT,
     question TEXT,
     answer TEXT,
     user_id BINARY(16),
