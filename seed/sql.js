@@ -55,7 +55,9 @@ exports.dropProjectsTableSQL = "DROP TABLE IF EXISTS projects;";
 exports.createProjectsTableSQL = `CREATE TABLE projects (
     id BINARY(16) PRIMARY KEY,
     name TEXT,
-    description TEXT,
+    tagline TEXT,
+    tech_stack TEXT,
+    answers TEXT,
     user_id BINARY(16),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
