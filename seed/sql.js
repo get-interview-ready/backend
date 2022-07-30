@@ -128,7 +128,8 @@ exports.dropTechnicalQuestionsTableSQL =
 exports.createTechnicalQuestionsTableSQL = `CREATE TABLE technical_questions (
     id BINARY(16) PRIMARY KEY,
     question TEXT,
-    answer TEXT,
+    solution TEXT,
+    tech_stack TEXT,
     solution_url TEXT,
     solution_type TEXT,
     user_id BINARY(16),
