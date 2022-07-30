@@ -56,7 +56,7 @@ exports.deleteDreamCompany = (req, res) => {
   if (!id) {
     return res.status(400).json({
       success: false,
-      message: "Please send user ID to fetch all dream companies.",
+      message: "Please send dream company ID to delete.",
     });
   }
   try {
@@ -113,7 +113,7 @@ exports.getDreamCompany = (req, res) => {
   if (!id) {
     return res.status(400).json({
       success: false,
-      message: "Please send dream company unique ID to delete.",
+      message: "Please send dream company unique ID to fetch.",
     });
   }
   try {
