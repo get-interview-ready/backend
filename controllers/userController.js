@@ -5,6 +5,8 @@ const {
 } = require("../services/userServices");
 const bcrypt = require("bcryptjs");
 const cookieToken = require("../utils/cookieToken");
+const { v4: uuidv4 } = require("uuid");
+const internalServerError = require("../utils/internalServerError");
 
 exports.signup = async (req, res, next) => {
   const { full_name, email, password } = req.body;
@@ -25,30 +27,25 @@ exports.signup = async (req, res, next) => {
 
   try {
     const hashedPassword = await bcrypt.hash(password, 10);
+    const id = uuidv4();
+    const user = { id, full_name, email };
 
     connection.query(
       CREATE_USER,
-      [full_name, email, hashedPassword],
+      [id, full_name, email, hashedPassword],
       (err, results) => {
         if (err) {
-          isDuplicateUser = true;
           return res.status(400).json({
             success: false,
             message: "User already exists",
           });
         }
-        connection.query(SELECT_USER_BY_EMAIL, [email], (err, results) => {
-          delete results[0].password;
-          cookieToken(results[0], res);
-        });
+
+        cookieToken(user, res);
       }
     );
-
   } catch (err) {
-    return res.status(500).json({
-      success: false,
-      message: "Internal server error. Please try again!",
-    });
+    return internalServerError(res);
   }
 };
 
@@ -86,10 +83,7 @@ exports.login = async (req, res, next) => {
       cookieToken(results[0], res);
     });
   } catch (err) {
-    return res.status(500).json({
-      success: false,
-      message: "Internal server error. Please try again!",
-    });
+    return internalServerError(res);
   }
 };
 

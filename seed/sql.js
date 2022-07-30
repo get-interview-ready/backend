@@ -80,38 +80,43 @@ exports.dropDreamCompaniesTableSQL =
 
 exports.createDreamCompaniesTableSQL = `CREATE TABLE dream_companies (
     id BINARY(16) PRIMARY KEY,
-    name TEXT,
+    name VARCHAR(255),
+    md_text TEXT,
+    referral_msg TEXT,
     user_id BINARY(16),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
   );`;
 
-// dream_company_refferals table
-exports.dropDreamCompanyRefferalsTableSQL =
-  "DROP TABLE IF EXISTS dream_company_refferals;";
+exports.addUniqueCompanyConstraint = `ALTER TABLE dream_companies ADD CONSTRAINT uq_company UNIQUE(name, user_id);`
 
-exports.createDreamCompanyRefferalsTableSQL = `CREATE TABLE dream_company_refferals (
+// dream_company_refferals table
+exports.dropDreamCompanyReferralsTableSQL =
+  "DROP TABLE IF EXISTS dream_company_referrals;";
+
+exports.createDreamCompanyReferralsTableSQL = `CREATE TABLE dream_company_referrals (
     id BINARY(16) PRIMARY KEY,
     name TEXT,
     link TEXT,
+    contacted TINYINT,
     user_id BINARY(16),
     company_id BINARY(16),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
   );`;
 
-// dream_comapny_notes table
-exports.dropDreamCompanyNotesTableSQL =
-  "DROP TABLE IF EXISTS dream_company_notes;";
+// // dream_comapny_notes table
+// exports.dropDreamCompanyNotesTableSQL =
+//   "DROP TABLE IF EXISTS dream_company_notes;";
 
-exports.createDreamCompanyNotesTableSQL = `CREATE TABLE dream_company_notes (
-    id BINARY(16) PRIMARY KEY,
-    note TEXT,
-    user_id BINARY(16),
-    company_id BINARY(16),
-    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
-  );`;
+// exports.createDreamCompanyNotesTableSQL = `CREATE TABLE dream_company_notes (
+//     id BINARY(16) PRIMARY KEY,
+//     note TEXT,
+//     user_id BINARY(16),
+//     company_id BINARY(16),
+//     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+//     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+//   );`;
 
 // technical_questions table
 exports.dropTechnicalQuestionsTableSQL =
