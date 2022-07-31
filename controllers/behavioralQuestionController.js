@@ -15,7 +15,7 @@ exports.createBehavioralQuestion = (req, res) => {
   if (!questionId || !question || !answer || !user_id) {
     return res.status(400).json({
       success: false,
-      message: "Send question question ID, question, answer and user ID",
+      message: "Send question, question ID, question, answer and user ID",
     });
   }
   try {
