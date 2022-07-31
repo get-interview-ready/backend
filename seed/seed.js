@@ -5,6 +5,7 @@ const {
   dropDreamCompanyReferralsTableSQL,
   dropFlashCardDecksTableSQL,
   dropFlashCardsTableSQL,
+  dropFlashCardTestsTableSQL,
   dropProjectQuestionsTableSQL,
   dropProjectsTableSQL,
   dropTechnicalQuestionsTableSQL,
@@ -16,6 +17,7 @@ const {
   createDreamCompanyReferralsTableSQL,
   createFlashCardDecksTableSQL,
   createFlashCardsTableSQL,
+  createFlashCardTestsTableSQL,
   createProjectQuestionsTableSQL,
   createProjectsTableSQL,
   createTechnicalQuestionsTableSQL,
@@ -50,6 +52,9 @@ const seedSchema = async () => {
     await connection.query(dropFlashCardsTableSQL);
     console.log("***dropped flash_cards table***");
 
+    await connection.query(dropFlashCardTestsTableSQL);
+    console.log("***dropped flash_card_tests table***");
+
     await connection.query(dropProjectQuestionsTableSQL);
     console.log("***dropped project_questions table***");
 
@@ -76,12 +81,15 @@ const seedSchema = async () => {
 
     await connection.query(createDreamCompanyReferralsTableSQL);
     console.log("***created dream_company_refferals table***");
-    
+
     await connection.query(createFlashCardDecksTableSQL);
     console.log("***created flash_card_folders table***");
 
     await connection.query(createFlashCardsTableSQL);
     console.log("***created flash_cards table***");
+
+    await connection.query(createFlashCardTestsTableSQL);
+    console.log("***created flash_card_tests table***");
 
     await connection.query(createProjectQuestionsTableSQL);
     console.log("***created project_questions table***");

@@ -8,6 +8,7 @@ const {
   createFlashCard,
   deleteFlashCard,
   getAllFlashCards,
+  insertTestScore,
 } = require("../controllers/flashCardController");
 
 router.route("/createDeck").post(auth, createDeck);
@@ -16,5 +17,6 @@ router.route("/getAllDecks/:id").get(auth, getAllDecks);
 router.route("/createFlashCard").post(auth, createFlashCard);
 router.route("/deleteFlashCard").delete(auth, deleteFlashCard);
 router.route("/getAllFlashCards").get(auth, getAllFlashCards);
+router.route("/insertTestScore").post(auth, insertTestScore);
 
 module.exports = router;

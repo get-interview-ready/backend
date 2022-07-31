@@ -8,7 +8,9 @@ const {
   INSERT_FLASH_CARD,
   DELETE_FLASH_CARD,
   SELECT_ALL_FLASH_CARDS,
+  INSERT_SCORE,
 } = require("../services/flashCardServices");
+const { use } = require("../routes/flashCard");
 
 exports.createDeck = (req, res) => {
   const { name, user_id } = req.body;
@@ -163,6 +165,36 @@ exports.getAllFlashCards = (req, res) => {
           success: true,
           message: "Flash cards fetched successfully",
           flashCards: results,
+        });
+      }
+    );
+  } catch (err) {
+    return internalServerError(res);
+  }
+};
+
+exports.insertTestScore = (req, res) => {
+  const { name, deck_id, user_id, num_of_questions, score } = req.body;
+  if (!name || !deck_id || !user_id || !num_of_questions || !score) {
+    return res.status(400).json({
+      success: true,
+      message:
+        "Send deck name, deck ID, user ID, no. of questions and test score.",
+    });
+  }
+
+  try {
+    const id = uuidv4();
+    connection.query(
+      INSERT_SCORE,
+      [id, name, deck_id, user_id, num_of_questions, score],
+      (err, results) => {
+        if (err) {
+          return internalServerError(res);
+        }
+        return res.status(200).json({
+          success: true,
+          message: "Test score successfully added.",
         });
       }
     );
