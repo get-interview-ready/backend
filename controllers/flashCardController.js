@@ -159,6 +159,7 @@ exports.getAllFlashCards = (req, res) => {
       [deck_id, user_id],
       (err, results) => {
         if (err) {
+          console.log(err)
           return internalServerError(res);
         }
         return res.status(200).json({
