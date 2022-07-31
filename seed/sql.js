@@ -25,8 +25,7 @@ exports.createBehavioralQuestionsTableSQL = `CREATE TABLE behavioral_questions (
   );`;
 
 // flash_card_folders table
-exports.dropFlashCardDecksTableSQL =
-  "DROP TABLE IF EXISTS flash_card_decks;";
+exports.dropFlashCardDecksTableSQL = "DROP TABLE IF EXISTS flash_card_decks;";
 
 exports.createFlashCardDecksTableSQL = `CREATE TABLE flash_card_decks (
     id BINARY(16) PRIMARY KEY,
@@ -47,6 +46,19 @@ exports.createFlashCardsTableSQL = `CREATE TABLE flash_cards (
     user_id BINARY(16),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+  );`;
+
+// flash_card_tests table
+exports.dropFlashCardTestsTableSQL = "DROP TABLE IF EXISTS flash_card_tests;";
+
+exports.createFlashCardTestsTableSQL = `CREATE TABLE flash_card_tests (
+    id BINARY(16) PRIMARY KEY,
+    name TEXT,
+    deck_id BINARY(16),
+    user_id BINARY(16),
+    num_of_questions INT,
+    score INT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
   );`;
 
 // projects table
@@ -78,8 +90,7 @@ exports.createProjectQuestionsTableSQL = `CREATE TABLE project_questions (
   );`;
 
 // dream_companies table
-exports.dropDreamCompaniesTableSQL =
-  "DROP TABLE IF EXISTS dream_companies;";
+exports.dropDreamCompaniesTableSQL = "DROP TABLE IF EXISTS dream_companies;";
 
 exports.createDreamCompaniesTableSQL = `CREATE TABLE dream_companies (
     id BINARY(16) PRIMARY KEY,
@@ -91,7 +102,7 @@ exports.createDreamCompaniesTableSQL = `CREATE TABLE dream_companies (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
   );`;
 
-exports.addUniqueCompanyConstraint = `ALTER TABLE dream_companies ADD CONSTRAINT uq_company UNIQUE(name, user_id);`
+exports.addUniqueCompanyConstraint = `ALTER TABLE dream_companies ADD CONSTRAINT uq_company UNIQUE(name, user_id);`;
 
 // dream_company_refferals table
 exports.dropDreamCompanyReferralsTableSQL =
