@@ -25,10 +25,10 @@ exports.createBehavioralQuestionsTableSQL = `CREATE TABLE behavioral_questions (
   );`;
 
 // flash_card_folders table
-exports.dropFlashCardFoldersTableSQL =
-  "DROP TABLE IF EXISTS flash_card_folders;";
+exports.dropFlashCardDecksTableSQL =
+  "DROP TABLE IF EXISTS flash_card_decks;";
 
-exports.createFlashCardFoldersTableSQL = `CREATE TABLE flash_card_folders (
+exports.createFlashCardDecksTableSQL = `CREATE TABLE flash_card_decks (
     id BINARY(16) PRIMARY KEY,
     name TEXT,
     user_id BINARY(16),
@@ -43,7 +43,7 @@ exports.createFlashCardsTableSQL = `CREATE TABLE flash_cards (
     id BINARY(16) PRIMARY KEY,
     question TEXT,
     answer TEXT,
-    category_id BINARY(16),
+    deck_id BINARY(16),
     user_id BINARY(16),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
