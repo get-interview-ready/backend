@@ -1,8 +1,13 @@
-exports.GET_STATS = `SELECT 
-    (SELECT COUNT(*) FROM behavioral_questions WHERE user_id = UUID_TO_BIN(?))`
+exports.GET_STATS = `SELECT
+    (SELECT COUNT(*) FROM behavioral_questions
+    WHERE user_id = UUID_TO_BIN(?)) AS behavioral_questions,
+    (SELECT COUNT(*) FROM dream_companies
+    WHERE user_id = UUID_TO_BIN(?)) AS dream_companies,
+    (SELECT COUNT(*) FROM projects
+    WHERE user_id = UUID_TO_BIN(?)) AS projects,
+    (SELECT COUNT(*) FROM technical_questions
+    WHERE user_id = UUID_TO_BIN(?)) AS technical_questions;`;
 
-// exports.SELECT_ALL_DECKS_BY_UID = `SELECT BIN_TO_UUID(id) AS id, name, 
-//     BIN_TO_UUID(user_id) AS user_id, updated_at,
-//     (SELECT COUNT(*) FROM flash_cards WHERE deck_id = flash_card_decks.id) 
-//     AS cards_count FROM flash_card_decks 
-//     WHERE flash_card_decks.user_id = UUID_TO_BIN(?);`;
+exports.GET_TEST_STATS = `SELECT num_of_questions, score, created_at FROM flash_card_tests 
+    WHERE user_id = UUID_TO_BIN(?) 
+    AND created_at > current_date - INTERVAL 7 DAY ORDER BY created_at ASC;`;

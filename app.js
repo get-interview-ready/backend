@@ -15,8 +15,10 @@ const behavioralQuestion = require("./routes/behavioralQuestion");
 const project = require("./routes/project");
 const technicalQuestion = require("./routes/technicalQuestion");
 const flashCard = require("./routes/flashCard");
+const dashboard = require("./routes/dashboard");
 
 app.use("/api/v1/", user);
+app.use("/api/v1/", dashboard);
 app.use("/api/v1/dreamCompanies", dreamCompany);
 app.use("/api/v1/behavioralQuestions", behavioralQuestion);
 app.use("/api/v1/projects", project);

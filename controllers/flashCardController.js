@@ -7,10 +7,10 @@ const {
   SELECT_ALL_DECKS_BY_UID,
   INSERT_FLASH_CARD,
   DELETE_FLASH_CARD,
+  SELECT_DECK_NAME,
   SELECT_ALL_FLASH_CARDS,
   INSERT_SCORE,
 } = require("../services/flashCardServices");
-const { use } = require("../routes/flashCard");
 
 exports.createDeck = (req, res) => {
   const { name, user_id } = req.body;
@@ -159,13 +159,19 @@ exports.getAllFlashCards = (req, res) => {
       [deck_id, user_id],
       (err, results) => {
         if (err) {
-          console.log(err)
           return internalServerError(res);
         }
-        return res.status(200).json({
-          success: true,
-          message: "Flash cards fetched successfully",
-          flashCards: results,
+        const flashCards = results;
+        connection.query(SELECT_DECK_NAME, [deck_id], (err, results) => {
+          if (err) {
+            return internalServerError(res);
+          }
+          return res.status(200).json({
+            success: true,
+            message: "Flash cards fetched successfully",
+            deckName: results[0].name,
+            flashCards,
+          });
         });
       }
     );

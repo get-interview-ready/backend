@@ -18,6 +18,9 @@ exports.INSERT_FLASH_CARD = `INSERT INTO flash_cards
 exports.DELETE_FLASH_CARD = `DELETE FROM flash_cards
     WHERE id = UUID_TO_BIN(?);`;
 
+exports.SELECT_DECK_NAME = `SELECT name FROM flash_card_decks
+    WHERE id = UUID_TO_BIN(?);`;
+
 exports.SELECT_ALL_FLASH_CARDS = `SELECT BIN_TO_UUID(id) AS id,
     question, answer, BIN_TO_UUID(deck_id) AS deck_id, 
     BIN_TO_UUID(user_id) AS user_id, updated_at
